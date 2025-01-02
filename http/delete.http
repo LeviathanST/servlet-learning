@@ -1,0 +1,8 @@
+// Delete a product
+DELETE http://localhost:8080/test-1/product/
+Content-Type: application/json
+
+{
+  "id": 26
+}
+

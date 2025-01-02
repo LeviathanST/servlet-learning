@@ -1,0 +1,7 @@
+// Get products by filter
+GET http://localhost:8080/test-1/product/list
+Content-type: application/json
+
+{
+  "productName": "PC"
+}
