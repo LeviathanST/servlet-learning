@@ -1,4 +1,4 @@
-// Create a product
+### Create a product
 POST http://localhost:8080/test-1/product/
 Content-Type: application/json
 
@@ -8,4 +8,34 @@ Content-Type: application/json
   "image": "hehe",
   "productYear": 2000,
   "categoryId": 1
+}
+
+### Account register 
+POST http://localhost:8080/test-1/register
+Content-Type: application/json
+
+{
+  "username": "hungdeptrai",
+  "password": "hung123@"
+}
+
+### Login
+POST http://localhost:8080/test-1/login
+Content-Type: application/json
+
+{
+  "username": "hungdeptrai",
+  "password": "hung123@"
+}
+
+### Logout 
+POST http://localhost:8080/test-1/logout
+
+### Login with Staff account
+POST http://localhost:8080/test-1/login
+Content-Type: application/json
+
+{
+  "username": "staff",
+  "password": "staff"
 }

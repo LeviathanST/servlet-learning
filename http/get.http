@@ -1,7 +1,11 @@
-// Get products by filter
+### Get products by filter
 GET http://localhost:8080/test-1/product/list
 Content-type: application/json
 
 {
-  "productName": "PC"
+  "productName": "Smartphone"
 }
+
+### Get all accounts
+GET http://localhost:8080/test-1/account/list
+Content-type: application/json
