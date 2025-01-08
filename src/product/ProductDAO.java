@@ -33,40 +33,43 @@ public class ProductDAO {
 		}
 		if (price != null && !filterBy.trim().isEmpty() && filterBy != null) {
 			if (filterBy.equals("Under")) {
-				query+= "AND p.price <= ?";
+				query += "AND p.price <= ?";
 			} else if (filterBy.equals("Above")) {
-				query+= "AND p.price >= ?";
+				query += "AND p.price >= ?";
 			}
 		}
 		return query;
 	}
 
 	public String constructUpdateQuery(UpdateProductDTO dto) {
-	StringBuilder query = new StringBuilder("UPDATE product SET ");
-	boolean isFirst = true;
+		StringBuilder query = new StringBuilder("UPDATE product SET ");
+		boolean isFirst = true;
 
-	// Dynamically add fields to the SET clause
-	if (dto.getName() != null && !dto.getName().trim().isEmpty()) {
-		query.append(isFirst ? "" : ", ").append("name = ?");
-		isFirst = false;
-	}
-	if (dto.getPrice() != null) { query.append(isFirst ? "" : ", ").append("price = ?"); isFirst = false; }
-	if (dto.getProductYear() != null) {
-		query.append(isFirst ? "" : ", ").append("product_year = ?");
-		isFirst = false;
-	}
-	if (dto.getImage() != null && !dto.getImage().trim().isEmpty()) {
-		query.append(isFirst ? "" : ", ").append("image = ?");
-		isFirst = false;
-	}
-	if (dto.getCategoryId() != null) {
-		query.append(isFirst ? "" : ", ").append("category_id = ?");
-	}
+		// Dynamically add fields to the SET clause
+		if (dto.getName() != null && !dto.getName().trim().isEmpty()) {
+			query.append(isFirst ? "" : ", ").append("name = ?");
+			isFirst = false;
+		}
+		if (dto.getPrice() != null) {
+			query.append(isFirst ? "" : ", ").append("price = ?");
+			isFirst = false;
+		}
+		if (dto.getProductYear() != null) {
+			query.append(isFirst ? "" : ", ").append("product_year = ?");
+			isFirst = false;
+		}
+		if (dto.getImage() != null && !dto.getImage().trim().isEmpty()) {
+			query.append(isFirst ? "" : ", ").append("image = ?");
+			isFirst = false;
+		}
+		if (dto.getCategoryId() != null) {
+			query.append(isFirst ? "" : ", ").append("category_id = ?");
+		}
 
-	// Ensure the WHERE clause is added
-	query.append(" WHERE id = ?");
+		// Ensure the WHERE clause is added
+		query.append(" WHERE id = ?");
 
-	    return query.toString();
+		return query.toString();
 	}
 
 	public List<ProductEntity> search(ServletContext c, SearchProductDTO dto)
@@ -74,23 +77,26 @@ public class ProductDAO {
 		List<ProductEntity> list = new ArrayList();
 		try {
 			String query = constructSearchQuery(
-				dto.getProductName(),
-				dto.getCategoryId(),
-				dto.getPrice(),
-				dto.getFilterBy()
-			);
+					dto.getProductName(),
+					dto.getCategoryId(),
+					dto.getPrice(),
+					dto.getFilterBy());
 			try (Connection conn = Database.connection(c)) {
 				PreparedStatement stmt = conn.prepareStatement(query);
 				int paramIndex = 1;
 				if (dto.getProductName() != null && !dto.getProductName().trim().isEmpty()) {
 					stmt.setString(paramIndex++, dto.getProductName());
-				};
+				}
+				;
 				if (dto.getCategoryId() != null) {
 					stmt.setInt(paramIndex++, dto.getCategoryId());
-				};
-				if (dto.getPrice() != null && !dto.getFilterBy().trim().isEmpty() && dto.getFilterBy() != null) {
+				}
+				;
+				if (dto.getPrice() != null && !dto.getFilterBy().trim().isEmpty()
+						&& dto.getFilterBy() != null) {
 					stmt.setFloat(paramIndex++, dto.getPrice());
-				};
+				}
+				;
 				ResultSet rs = stmt.executeQuery();
 				while (rs.next()) {
 					ProductEntity p = new ProductEntity();
@@ -157,15 +163,14 @@ public class ProductDAO {
 				}
 			}
 			return status;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Some troubles occurs when delete a product!");
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Database class is not found!");
-		}	
+		}
 	}
-	
+
 	// TODO:
 	public boolean updateOneById(ServletContext c, UpdateProductDTO dto) {
 		String query = constructUpdateQuery(dto);
@@ -196,8 +201,7 @@ public class ProductDAO {
 				}
 			}
 			return status;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Some troubles occurs when update a product!");
 		} catch (ClassNotFoundException e) {
