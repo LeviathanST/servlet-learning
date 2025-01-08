@@ -8,16 +8,10 @@ import java.io.IOException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-
-public class HttpUtil<T> {
-	private final Gson gson;
-
-	public HttpUtil() {
-		this.gson = new Gson();
-	}
-
-	public T getBodyContentFromReq(HttpServletRequest req, Class<T> clazz){
+public class HttpUtil {
+	public static <T> T getBodyContentFromReq(HttpServletRequest req, Class<T> clazz) {
 		StringBuilder jsonBody = new StringBuilder();
+		Gson gson = new Gson();
 
 		try (BufferedReader reader = req.getReader()) {
 			String line;
@@ -32,7 +26,7 @@ public class HttpUtil<T> {
 		// Deserialize JSON -> Object
 		try {
 			return gson.fromJson(jsonBody.toString(), clazz);
-		} catch (JsonSyntaxException e){
+		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 			return null;
 		}
